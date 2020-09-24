@@ -6,7 +6,7 @@ Your library is not modified in any way, the extension simply adds buttons to ac
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/plex-logo-flat-small.png)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-shuffle.png)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-shuffle.jpg)
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-trailer.png)
 
