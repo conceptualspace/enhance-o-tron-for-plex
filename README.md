@@ -5,8 +5,11 @@ Enhance-o-tron is a browser extension that adds movie trailers, library shufflin
 Your library is not modified in any way, the extension simply adds buttons to access the extra features to the UI.
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/plex-logo-flat-small.png)
+
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/screenshot-shuffle.png)
+
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/screenshot-trailer.png)
+
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/screenshot-zoom.png)
 
 *Plex, the Plex Play logo and Plex Media Server are trademarks of Plex and used under a license.
