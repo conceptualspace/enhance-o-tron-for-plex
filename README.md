@@ -6,11 +6,11 @@ Your library is not modified in any way, the extension simply adds buttons to ac
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/plex-logo-flat-small.png)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-shuffle.jpg)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-chrome-shuffle.jpg)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-trailer.png)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-chrome-trailer.png)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-zoom.png)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-chrome-zoom.png)
 
 *Plex, the Plex Play logo and Plex Media Server are trademarks of Plex and used under a license.
 
