@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Enhance-o-tron for Plex",
+  "description": "adds movie trailers, library shuffling, and 2.35:1 zoom support to plex",
+  "version": "1.0",
+  "author": "dev@conceptualspace.net",
+  "permissions": [
+    "*://app.plex.tv/*",
+    "*://localhost/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://app.plex.tv/*", "*://localhost/*"],
+      "js": ["jquery-3.5.1.slim.min.js", "arrive.min.js", "content_script.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "img/icon16.png",
+    "32": "img/icon32.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+  "web_accessible_resources": ["img/icon219.svg"]
+}
