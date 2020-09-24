@@ -2,7 +2,7 @@
 
 Enhance-o-tron is a browser extension that adds movie trailers, library shuffling, and 2.35:1 zoom support to Plex*.
 
-Your library is not modified in any way, the extension simply adds buttons to access the extra features to the UI.
+Your library is not modified in any way, the extension simply adds the extra features to the UI.
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/plex-logo-flat-small.png)
 
