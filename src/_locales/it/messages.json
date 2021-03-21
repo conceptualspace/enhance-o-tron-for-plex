@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhance-O-Tron per Plex"
+  },
+  "extensionDescription": {
+    "message": "Aggiunge trailer di film, riproduzione casuale della libreria e supporto dello zoom 21:9 a Plex"
+  },
+  "playTrailer": {
+    "message": "Guarda il trailer "
+  },
+  "shuffle": {
+    "message": "Mescolare"
+  }
+}
