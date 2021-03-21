@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhance-O-Tron для Plex"
+  },
+  "extensionDescription": {
+    "message": "Добавляет в Plex трейлеры фильмов, перемешивание библиотеки и поддержку масштабирования 21: 9"
+  },
+  "playTrailer": {
+    "message": "Смотреть трейлер"
+  },
+  "shuffle": {
+    "message": "Перемешать"
+  }
+}

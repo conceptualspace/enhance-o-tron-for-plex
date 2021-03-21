@@ -18,7 +18,7 @@ function createTrailer(title, year, margin) {
     if (margin) {
         trailer.style.marginLeft = '20px';
     }
-    trailer.innerText = "Play Trailer";
+    trailer.innerText = browser.i18n.getMessage("playTrailer");
     return trailer;
 }
 
@@ -59,7 +59,7 @@ $(document).arrive(".PageHeaderBadge-badge-2oDBgn", function() {
     let newUrl = nonParams + newParams;
 
     let a = document.createElement('a');
-    let linkText = document.createTextNode(" 🎲 Shuffle");
+    let linkText = document.createTextNode(" 🎲 " + browser.i18n.getMessage("shuffle"));
     a.appendChild(linkText);
     a.title = "Sort the library randomly";
     a.href = newUrl;

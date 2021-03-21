@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhance-O-Tron pour Plex"
+  },
+  "extensionDescription": {
+    "message": "Ajoute des bandes-annonces de films, la lecture aléatoire de la bibliothèque et la prise en charge du zoom 21: 9 à Plex"
+  },
+  "playTrailer": {
+    "message": "Lire la bande-annonce"
+  },
+  "shuffle": {
+    "message": "Mélanger"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhance-O-Tron 用于 Plex"
+  },
+  "extensionDescription": {
+    "message": "向PLEX添加电影预告片，库改组和21：9缩放支持"
+  },
+  "playTrailer": {
+    "message": "看预告片"
+  },
+  "shuffle": {
+    "message": "洗"
+  }
+}

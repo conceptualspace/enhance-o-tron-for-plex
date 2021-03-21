@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhance-O-Tron för Plex"
+  },
+  "extensionDescription": {
+    "message": "Lägger till filmtrailers, biblioteksblandning och 21: 9-zoomstöd till PLEX"
+  },
+  "playTrailer": {
+    "message": "Se Trailer"
+  },
+  "shuffle": {
+    "message": "Blanda"
+  }
+}
