@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhance-O-Tron for Plex"
+  },
+  "extensionDescription": {
+    "message": "Plex에 영화 예고편, 라이브러리 셔플 및 21:9 와이드 스크린 지원 추가"
+  },
+  "playTrailer": {
+    "message": "예고편보기"
+  },
+  "shuffle": {
+    "message": "혼합"
+  }
+}
