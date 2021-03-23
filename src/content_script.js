@@ -2,6 +2,11 @@
 
 "use strict";
 
+// simple polyfill for ff/chrome
+window.browser = (function () {
+    return window.browser || window.chrome;
+})();
+
 /*
 // link to movie trailer
 // todo: embed trailer?
