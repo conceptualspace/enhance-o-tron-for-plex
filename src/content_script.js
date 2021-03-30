@@ -40,8 +40,12 @@ $(document).arrive("div[data-qa-id='preplaySecondTitle']", function() {
 $(document).arrive("div[data-qa-id='preplay-secondTitle']", function() {
     let title = $("div[data-qa-id='preplay-mainTitle']")[0].textContent;
     let year = $("div[data-qa-id='preplay-secondTitle']")[0].textContent;
-    if (! $('#trailer')[0]) {
+    if (! $('#trailer')[0] && $('.PrePlayTertiaryTitle-tertiaryTitle-1LwUaC')[0]) {
+        // < 4.54.x
         $('.PrePlayTertiaryTitle-tertiaryTitle-1LwUaC')[0].appendChild(createTrailer(title, year, true));
+    } else if (! $('#trailer')[0] && $('.PrePlayTertiaryTitle-tertiaryTitle-2RGElY')[0]) {
+        // > 4.54.x
+        $('.PrePlayTertiaryTitle-tertiaryTitle-2RGElY')[0].appendChild(createTrailer(title, year, true));
     }
 });
 
@@ -74,8 +78,38 @@ $(document).arrive(".PageHeaderBadge-badge-2oDBgn", function() {
     headerBadgeNode[0].parentNode.insertBefore(a, headerBadgeNode.nextSibling);
 });
 
+// shuffle library titles
+// > v4.54.x
+$(document).arrive(".PageHeaderBadge-badge-1Jxlh2", function() {
+    const url = window.location.href;
+    const nonParams = url.slice(0, url.indexOf('?') + 1);
+    const params = url.slice(url.indexOf('?') + 1).split('&');
+
+    let newParams = params.map(function(param) {
+        if (param.includes('sort=')) {
+            return ''
+        } else {
+            return param
+        }
+    }).join('&');
+
+    newParams += "&sort=random";
+    let newUrl = nonParams + newParams;
+
+    let a = document.createElement('a');
+    let linkText = document.createTextNode(" 🎲 " + browser.i18n.getMessage("shuffle"));
+    a.appendChild(linkText);
+    a.title = "Sort the library randomly";
+    a.href = newUrl;
+    a.style.marginLeft = "25px";
+
+    let headerBadgeNode = $(".PageHeaderBadge-badge-1Jxlh2");
+    headerBadgeNode[0].parentNode.insertBefore(a, headerBadgeNode.nextSibling);
+});
+
 
 // 2.35:1 aka 21:9 widescreen zoom
+// < v4.54.x
 $(document).arrive(".PlayerIconButton-playerButton-1DmNp4", function() {
     if (! $('#widescreen')[0]) {
         let widescreenBtn = document.createElement('button');
@@ -95,6 +129,42 @@ $(document).arrive(".PlayerIconButton-playerButton-1DmNp4", function() {
 
         widescreenBtn.onclick = function () {
             let video = $("video.HTMLMedia-mediaElement-35x77U")[0];
+            if (video.style.transform === "scale(1.34)") {
+                video.style.transform = "scale(1)";
+                widescreenBtn.style.opacity = "0.5";
+            } else if (video.parentElement.style.height === "100%") {
+                video.style.transform = "scale(1.34)";
+                widescreenBtn.style.opacity = "1";
+            }
+        }
+
+        // insert button into bottom toolbar
+        let closeBtn = document.querySelectorAll("button[data-qa-id='closeButton']")[0];
+        closeBtn.parentNode.insertBefore(widescreenBtn, closeBtn.nextSibling);
+    }
+});
+
+// 2.35:1 aka 21:9 widescreen zoom
+// > v4.54.x
+$(document).arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
+    if (! $('#widescreen')[0]) {
+        let widescreenBtn = document.createElement('button');
+        const classes = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-2smHOM", "Link-link-3v-v0b", "Link-default-1dmcVx"];
+        widescreenBtn.setAttribute("id","widescreen");
+        widescreenBtn.classList.add(...classes);
+        widescreenBtn.style.marginLeft = "10px";
+        widescreenBtn.style.opacity = "0.5";
+
+        let widescreenIcon = document.createElement("img");
+        widescreenIcon.src = chrome.runtime.getURL("img/icon219.svg");
+        widescreenIcon.classList.add("PlexIcon-plexIcon-1hNiE2");
+        widescreenIcon.style.width = "1.3em";
+        widescreenIcon.style.height = "1.3em";
+
+        widescreenBtn.appendChild(widescreenIcon);
+
+        widescreenBtn.onclick = function () {
+            let video = $("video.HTMLMedia-mediaElement-2XwlNN")[0];
             if (video.style.transform === "scale(1.34)") {
                 video.style.transform = "scale(1)";
                 widescreenBtn.style.opacity = "0.5";
