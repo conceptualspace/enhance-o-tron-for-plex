@@ -3,7 +3,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "dev@conceptualspace.net",
   "permissions": [
     "*://app.plex.tv/*",
@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["*://app.plex.tv/*", "*://localhost/*", "*://127.0.0.1/*"],
-      "js": ["jquery-3.5.1.slim.min.js", "arrive.min.js", "content_script.js"],
+      "js": ["arrive.min.js", "content_script.js"],
       "all_frames": true,
       "run_at": "document_idle"
     }
