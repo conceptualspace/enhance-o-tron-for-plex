@@ -1,0 +1,52 @@
+// copyright 2020 conceptualspace
+
+"use strict";
+
+let url = null;
+let tabId = null;
+
+function getUrl(tabs) {
+    tabId = tabs[0].id;
+    url = new URL(tabs[0].url).origin + "/*";
+    if (url && !url.startsWith("chrome")) {
+        checkPermissions(url);
+    } else {
+        window.close()
+    }
+}
+
+function checkPermissions() {
+    chrome.permissions.contains({
+        origins: [url]
+    }, function(result) {
+        if (result) {
+            document.getElementById("enabled").style.display = "block";
+        } else {
+            document.getElementById("disabled").style.display = "block";
+        }
+    });
+}
+
+function saveOptions(e) {
+    e.preventDefault();
+
+    if (e.submitter.id === 'cancel') {
+        window.close();
+        return;
+    }
+
+    chrome.permissions.request({
+        origins: [url]
+    }, function(granted) {
+        if (granted) {
+            chrome.tabs.reload(tabId);
+            window.close();
+        } else {
+            document.getElementById("error").style.display = "block";
+        }
+    });
+}
+
+chrome.tabs.query({ active: true, currentWindow: true }, getUrl);
+
+document.querySelector("form").addEventListener("submit", saveOptions);

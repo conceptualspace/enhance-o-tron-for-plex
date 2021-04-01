@@ -9,12 +9,6 @@ window.browser = (function () {
 
 // TRAILERS //
 
-/*
-$.get( "https://www.youtube.com/results?search_query=movie+trailer", function( data ) {
-    $( ".result" ).html( data );
-});
-*/
-
 function createTrailerElem(title, year, margin) {
     let trailer = document.createElement('a');
     trailer.setAttribute("id", "enhanceotron-trailer");
@@ -25,6 +19,9 @@ function createTrailerElem(title, year, margin) {
     }
     trailer.innerText = browser.i18n.getMessage("playTrailer");
     return trailer;
+
+    // todo: embedded mode
+    // $.get( "https://www.youtube.com/results?search_query=movie+trailer", function( data ) { $( ".result" ).html( data ); });
 }
 
 // Plex v3.x

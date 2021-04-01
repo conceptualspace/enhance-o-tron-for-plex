@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enhance-O-Tron Settings</title>
+</head>
+<body style="width: 380px; padding: 0px 20px 0px 20px;">
+<div id="disabled" style="display:none;">
+<h2>Enable Enhance-O-Tron on this Domain?</h2>
+<p id="options-desc" style="font-size: medium; color:dimgrey">
+    If you are running Plex on this domain, you must give Enhance-O-Tron permission to run here.
+    <br />
+</p>
+    <form>
+        <button type="submit" style="width: 80px; height: 40px; border: 1px solid white; border-radius: 10px; background-color: orange">Yes</button>&nbsp;
+        <button id="cancel" style="width: 80px; height: 40px; border: 1px solid white; border-radius: 10px;">No</button>
+        <br /><br />
+    </form>
+
+</div>
+
+<div id="enabled" style="display:none;">
+    <p style="font-size: medium; color:mediumseagreen">
+        Enhance-O-Tron for Plex is enabled on this domain.
+    </p>
+</div>
+
+<div id="error" style="display:none;">
+    <p style="font-size: large; color:darkred">
+        Permission was denied. Click "Allow" on the browser prompt, or use <a href="https://app.plex.tv" target="_blank">https://app.plex.tv</a> instead.
+    </p>
+</div>
+
+<script src="options.js"></script>
+
+</body>
+</html>

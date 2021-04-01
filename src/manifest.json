@@ -3,29 +3,29 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "author": "dev@conceptualspace.net",
   "permissions": [
     "*://app.plex.tv/*",
     "*://localhost/*",
-    "*://127.0.0.1/*"
+    "*://127.0.0.1/*",
+    "activeTab"
+  ],
+  "optional_permissions": [
+    "<all_urls>"
   ],
   "background": {
     "scripts": ["background.js"]
   },
-  "content_scripts": [
-    {
-      "matches": ["*://app.plex.tv/*", "*://localhost/*", "*://127.0.0.1/*"],
-      "js": ["arrive.min.js", "content_script.js"],
-      "all_frames": true,
-      "run_at": "document_idle"
-    }
-  ],
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "Enhance-O-Tron Settings",
+    "default_popup": "options.html"
+  },
   "icons": {
     "16": "img/icon16.png",
     "32": "img/icon32.png",
     "48": "img/icon48.png",
     "128": "img/icon128.png"
-  },
-  "web_accessible_resources": ["img/icon219.svg"]
+  }
 }
