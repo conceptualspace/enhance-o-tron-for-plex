@@ -19,7 +19,7 @@
   },
   "browser_action": {
     "browser_style": true,
-    "default_title": "Enhance-O-Tron Settings",
+    "default_title": "Configure Enhance-O-Tron for Plex",
     "default_popup": "options.html"
   },
   "icons": {
