@@ -14,7 +14,7 @@ function handleInstalled(details) {
 function handleUpdated(tabId, changeInfo, tabInfo) {
     // todo: support firefox
     // tabInfo.url is only present if we have permissions for this domain (NB: url always absent on firefox without tabs perm)
-    if (tabInfo.url && !tabInfo.url.startsWith("chrome")) {
+    if (tabInfo.url && tabInfo.url.startsWith("http")) {
         // in order to avoid executing a bunch of times, we'll run the code below which sends a message from the tab
         // back to us with the loaded status
         chrome.tabs.executeScript(tabId, {

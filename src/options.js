@@ -7,11 +7,11 @@ let tabId = null;
 
 function getUrl(tabs) {
     tabId = tabs[0].id;
-    url = new URL(tabs[0].url).origin + "/*";
-    if (url && !url.startsWith("chrome")) {
+    if (tabs[0].url && tabs[0].url.startsWith("http")) {
+        url = new URL(tabs[0].url).origin + "/*";
         checkPermissions(url);
     } else {
-        window.close()
+        window.close();
     }
 }
 
