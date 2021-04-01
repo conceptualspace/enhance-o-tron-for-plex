@@ -2,15 +2,10 @@
 
 "use strict";
 
-// simple polyfill for ff/chrome
-window.browser = (function () {
-    return window.browser || window.chrome;
-})();
-
 function handleInstalled(details) {
     if (details.reason === "install") {
         // set uninstall URL
-        browser.runtime.setUninstallURL("https://forms.gle/JqMEogANnkktEtSR9");
+        chrome.runtime.setUninstallURL("https://forms.gle/JqMEogANnkktEtSR9");
     }
 }
 
@@ -22,7 +17,7 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
     if (tabInfo.url && !tabInfo.url.startsWith("chrome")) {
         // in order to avoid executing a bunch of times, we'll run the code below which sends a message from the tab
         // back to us with the loaded status
-        browser.tabs.executeScript(tabId, {
+        chrome.tabs.executeScript(tabId, {
             code: "if (typeof(enhanceotronLoaded) == 'undefined') {chrome.runtime.sendMessage({ loaded: false })};"
         });
     }
@@ -32,12 +27,12 @@ function handleMessage(request, sender, sendResponse) {
     if (request.loaded === false) {
         chrome.tabs.executeScript({ code: "let enhanceotronLoaded = true;" }, function() {
             chrome.tabs.executeScript({ file: "/arrive.min.js"}, function() {
-                browser.tabs.executeScript({ file: "/content_script.js"});
+                chrome.tabs.executeScript({ file: "/content_script.js"});
             });
         });
     }
 }
 
-browser.runtime.onMessage.addListener(handleMessage);
-browser.tabs.onUpdated.addListener(handleUpdated);
-browser.runtime.onInstalled.addListener(handleInstalled);
+chrome.runtime.onMessage.addListener(handleMessage);
+chrome.tabs.onUpdated.addListener(handleUpdated);
+chrome.runtime.onInstalled.addListener(handleInstalled);

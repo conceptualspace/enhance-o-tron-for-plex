@@ -2,11 +2,6 @@
 
 "use strict";
 
-// simple polyfill for ff/chrome
-window.browser = (function () {
-    return window.browser || window.chrome;
-})();
-
 // TRAILERS //
 
 function createTrailerElem(title, year, margin) {
@@ -17,7 +12,7 @@ function createTrailerElem(title, year, margin) {
     if (margin) {
         trailer.style.marginLeft = '20px';
     }
-    trailer.innerText = browser.i18n.getMessage("playTrailer");
+    trailer.innerText = chrome.i18n.getMessage("playTrailer");
     return trailer;
 
     // todo: embedded mode
@@ -74,7 +69,7 @@ function createShuffleElem() {
     let newUrl = nonParams + newParams;
 
     let a = document.createElement('a');
-    let linkText = document.createTextNode(" 🎲 " + browser.i18n.getMessage("shuffle"));
+    let linkText = document.createTextNode(" 🎲 " + chrome.i18n.getMessage("shuffle"));
     a.setAttribute("id", "enhanceotron-shuffle");
     a.appendChild(linkText);
     a.title = "Sort the library randomly";
@@ -115,7 +110,7 @@ function createZoomElem(btnClasses, iconClass, videoClass) {
     widescreenBtn.style.opacity = "0.5";
 
     let widescreenIcon = document.createElement("img");
-    widescreenIcon.src = browser.runtime.getURL("img/icon219.svg");
+    widescreenIcon.src = chrome.runtime.getURL("img/icon219.svg");
     widescreenIcon.classList.add(iconClass);
     widescreenIcon.style.width = "1.3em";
     widescreenIcon.style.height = "1.3em";
