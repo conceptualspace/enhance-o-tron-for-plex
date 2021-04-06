@@ -2,6 +2,8 @@
 
 "use strict";
 
+let enhanceotronAudioCtx, compressor, source;
+
 // TRAILERS //
 
 function createTrailerElem(title, year, margin) {
@@ -105,6 +107,7 @@ document.arrive(".PageHeaderBadge-badge-1Jxlh2", function() {
 function createZoomElem(btnClasses, iconClass, videoClass) {
     let widescreenBtn = document.createElement('button');
     widescreenBtn.setAttribute("id","enhanceotron-widescreen");
+    widescreenBtn.setAttribute("title","Zoom for 21:9");
     widescreenBtn.classList.add(...btnClasses);
     widescreenBtn.style.marginLeft = "10px";
     widescreenBtn.style.opacity = "0.5";
@@ -127,9 +130,10 @@ function createZoomElem(btnClasses, iconClass, videoClass) {
         }
     }
 
-    const closeBtn = document.querySelector("button[data-qa-id='closeButton']");
-    if (closeBtn) {
-        closeBtn.parentNode.insertBefore(widescreenBtn, closeBtn.nextSibling);
+    const rightControls = document.querySelector('.PlayerControls-buttonGroupRight-3tN_y5');
+
+    if (rightControls) {
+        rightControls.insertBefore(widescreenBtn, rightControls.lastChild);
     }
 }
 
@@ -154,3 +158,80 @@ document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
         createZoomElem(btnClasses, iconClass, videoClass);
     }
 });
+
+// AUDIO COMPRESSOR //
+
+function createCompressor(btnClasses, iconClass) {
+    let compressorBtn = document.createElement('button');
+    compressorBtn.setAttribute("id","enhanceotron-compressor");
+    compressorBtn.setAttribute('data-active', 'false');
+    compressorBtn.setAttribute('title', 'Volume Compressor');
+    compressorBtn.classList.add(...btnClasses);
+    compressorBtn.style.marginLeft = "10px";
+    compressorBtn.style.opacity = "0.5";
+
+    let compressorIcon = document.createElement("img");
+    compressorIcon.src = chrome.runtime.getURL("img/compress.svg");
+    compressorIcon.classList.add(iconClass);
+    compressorIcon.style.width = "1.3em";
+    compressorIcon.style.height = "1.3em";
+
+    compressorBtn.appendChild(compressorIcon);
+
+    compressorBtn.onclick = function () {
+        const active = compressorBtn.getAttribute('data-active');
+        if (source && active === 'false') {
+            console.log(source);
+            compressorBtn.setAttribute('data-active', 'true');
+            compressorBtn.style.opacity = "1";
+            source.disconnect(enhanceotronAudioCtx.destination);
+            source.connect(compressor);
+            compressor.connect(enhanceotronAudioCtx.destination);
+        } else if (source && active === 'true') {
+            console.log(source);
+            compressorBtn.setAttribute('data-active', 'false');
+            compressorBtn.style.opacity = "0.5";
+            source.disconnect(compressor);
+            compressor.disconnect(enhanceotronAudioCtx.destination);
+            source.connect(enhanceotronAudioCtx.destination);
+        }
+    }
+
+    const rightControls = document.querySelector('.PlayerControls-buttonGroupRight-3tN_y5');
+
+    if (rightControls) {
+        rightControls.insertBefore(compressorBtn, rightControls.lastChild);
+    }
+}
+
+// Plex v4.54.x
+// we need to listen for the toolbar instead of the video because plex might nuke it duruing loading
+document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
+    if (!document.getElementById('enhanceotron-compressor')) {
+        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-2smHOM", "Link-link-3v-v0b", "Link-default-1dmcVx"];
+        const iconClass = "PlexIcon-plexIcon-1hNiE2";
+        // insert button into bottom toolbar
+        createCompressor(btnClasses, iconClass);
+    }
+});
+
+document.arrive(".HTMLMedia-mediaElement-2XwlNN", function() {
+    const videoElem = document.querySelector('.HTMLMedia-mediaElement-2XwlNN');
+    if (enhanceotronAudioCtx) {
+        source.disconnect();
+        enhanceotronAudioCtx.close();
+    }
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    enhanceotronAudioCtx = new AudioContext();
+    source = enhanceotronAudioCtx.createMediaElementSource(videoElem);
+    compressor = enhanceotronAudioCtx.createDynamicsCompressor();
+
+    compressor.threshold.value = -50;
+    compressor.knee.value = 40;
+    compressor.ratio.value = 12;
+    compressor.attack.value = 0;
+    compressor.release.value = 0.25;
+
+    source.connect(enhanceotronAudioCtx.destination);
+});
+
