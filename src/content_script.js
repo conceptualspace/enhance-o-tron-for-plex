@@ -2,7 +2,7 @@
 
 "use strict";
 
-let enhanceotronAudioCtx, compressor, source;
+let enhanceotronAudioCtx, compressor, source, compressorActive;
 
 // TRAILERS //
 
@@ -164,11 +164,11 @@ document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
 function createCompressor(btnClasses, iconClass) {
     let compressorBtn = document.createElement('button');
     compressorBtn.setAttribute("id","enhanceotron-compressor");
-    compressorBtn.setAttribute('data-active', 'false');
+    //compressorBtn.setAttribute('data-active', 'false');
     compressorBtn.setAttribute('title', 'Volume Compressor');
     compressorBtn.classList.add(...btnClasses);
     compressorBtn.style.marginLeft = "10px";
-    compressorBtn.style.opacity = "0.5";
+    compressorBtn.style.opacity = compressorActive ? "1" : "0.5";
 
     let compressorIcon = document.createElement("img");
     compressorIcon.src = chrome.runtime.getURL("img/compress.svg");
@@ -179,17 +179,17 @@ function createCompressor(btnClasses, iconClass) {
     compressorBtn.appendChild(compressorIcon);
 
     compressorBtn.onclick = function () {
-        const active = compressorBtn.getAttribute('data-active');
-        if (source && active === 'false') {
-            console.log(source);
-            compressorBtn.setAttribute('data-active', 'true');
+        //const active = compressorBtn.getAttribute('data-active');
+        if (source && !compressorActive) {
+            //compressorBtn.setAttribute('data-active', 'true');
+            compressorActive = true
             compressorBtn.style.opacity = "1";
             source.disconnect(enhanceotronAudioCtx.destination);
             source.connect(compressor);
             compressor.connect(enhanceotronAudioCtx.destination);
-        } else if (source && active === 'true') {
-            console.log(source);
-            compressorBtn.setAttribute('data-active', 'false');
+        } else if (source && compressorActive) {
+            //compressorBtn.setAttribute('data-active', 'false');
+            compressorActive = false
             compressorBtn.style.opacity = "0.5";
             source.disconnect(compressor);
             compressor.disconnect(enhanceotronAudioCtx.destination);
@@ -217,21 +217,28 @@ document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
 
 document.arrive(".HTMLMedia-mediaElement-2XwlNN", function() {
     const videoElem = document.querySelector('.HTMLMedia-mediaElement-2XwlNN');
-    if (enhanceotronAudioCtx) {
-        source.disconnect();
-        enhanceotronAudioCtx.close();
-    }
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    enhanceotronAudioCtx = new AudioContext();
-    source = enhanceotronAudioCtx.createMediaElementSource(videoElem);
-    compressor = enhanceotronAudioCtx.createDynamicsCompressor();
+    // ensure audio isnt zeroed out
+    videoElem.crossOrigin = "anonymous";
 
-    compressor.threshold.value = -50;
-    compressor.knee.value = 40;
-    compressor.ratio.value = 12;
-    compressor.attack.value = 0;
-    compressor.release.value = 0.25;
+    // audioContext can only be created/resumed after user gesture
+    // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+    videoElem.addEventListener('play', () => {
+        if (!enhanceotronAudioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            enhanceotronAudioCtx = new AudioContext();
 
-    source.connect(enhanceotronAudioCtx.destination);
+            if (!source) {
+                source = enhanceotronAudioCtx.createMediaElementSource(videoElem);
+            }
+
+            compressor = enhanceotronAudioCtx.createDynamicsCompressor();
+            compressor.threshold.value = -50;
+            compressor.knee.value = 40;
+            compressor.ratio.value = 12;
+            compressor.attack.value = 0;
+            compressor.release.value = 0.25;
+
+            source.connect(enhanceotronAudioCtx.destination);
+        }
+    });
 });
-
