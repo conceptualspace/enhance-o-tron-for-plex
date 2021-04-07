@@ -6,12 +6,15 @@ function handleInstalled(details) {
     if (details.reason === "install") {
         // set uninstall URL
         chrome.runtime.setUninstallURL("https://forms.gle/JqMEogANnkktEtSR9");
+    } else if (details.reason === "update") {
+        const url = chrome.runtime.getURL("updated.html");
+        chrome.tabs.create({ url });
     }
 }
 
 // support custom plex domains
 // todo: can possibly be simplified in future manifest v3, via chrome.contentScripts.register
-function handleUpdated(tabId, changeInfo, tabInfo) {
+function handleUpdatedTab(tabId, changeInfo, tabInfo) {
     // todo: support firefox. note: url absent on firefox without tabs perm
     // tabInfo.url is only present if we have permissions for the domain, so the following only executes on relevant pages
     if (tabInfo.url && tabInfo.url.startsWith("http") && tabInfo.status === 'complete') {
@@ -31,5 +34,5 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
     }
 }
 
-chrome.tabs.onUpdated.addListener(handleUpdated);
+chrome.tabs.onUpdated.addListener(handleUpdatedTab);
 chrome.runtime.onInstalled.addListener(handleInstalled);
