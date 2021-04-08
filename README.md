@@ -1,16 +1,18 @@
-# Enhance-O-Tron for Plex ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/src/img/icon48.png) 
+# ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/src/img/icon48.png) Enhance-O-Tron for Plex
 
-Enhanceotron is a browser extension that adds movie trailers, library shuffling, and 2.35:1 zoom support to Plex*.
+Enhanceotron is a browser extension that adds movie trailers, library shuffling, 21:9 ultrawide zoom, and dynamic audio compression to Plex*.
 
 Your library is not modified in any way, the extension simply adds the extra features to the UI.
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/plex-logo-flat-small.png)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-chrome-shuffle.jpg)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/apple/enhance-screenshot1.png)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-chrome-trailer.png)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/apple/enhance-screenshot2.png)
 
-![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/screenshot-chrome-zoom.png)
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/apple/enhance-screenshot3.png)
+
+![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/apple/enhance-screenshot4.png)
 
 *Plex, the Plex Play logo and Plex Media Server are trademarks of Plex and used under a license.
 
