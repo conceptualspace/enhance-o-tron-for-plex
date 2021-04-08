@@ -6,7 +6,7 @@ function handleInstalled(details) {
     if (details.reason === "install") {
         // set uninstall URL
         chrome.runtime.setUninstallURL("https://forms.gle/JqMEogANnkktEtSR9");
-    } else if (details.reason === "update") {
+    } else if (details.reason === "update" && details.previousVersion !== "1.3.2") {
         const url = chrome.runtime.getURL("updated.html");
         chrome.tabs.create({ url });
     }
