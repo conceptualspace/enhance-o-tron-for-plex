@@ -22,7 +22,7 @@ function handleUpdatedTab(tabId, changeInfo, tabInfo) {
         chrome.tabs.executeScript(tabId, {
             code: "enhanceotronLoaded"
         }, function(result) {
-            if (!result[0]) {
+            if (result && !result[0]) {
                 // load content script
                 chrome.tabs.executeScript(tabId, { code: "let enhanceotronLoaded = true;" }, function() {
                     chrome.tabs.executeScript(tabId, { file: "/arrive.min.js"}, function() {

@@ -2,7 +2,8 @@
 
 "use strict";
 
-let enhanceotronAudioCtx, compressor, source, compressorActive;
+// todo: fix this
+var enhanceotronAudioCtx, compressor, source, compressorActive;
 
 // TRAILERS //
 
