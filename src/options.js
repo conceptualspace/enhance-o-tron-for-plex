@@ -30,11 +30,6 @@ function checkPermissions() {
 function saveOptions(e) {
     e.preventDefault();
 
-    if (e.submitter.id === 'cancel') {
-        window.close();
-        return;
-    }
-
     chrome.permissions.request({
         origins: [url]
     }, function(granted) {
@@ -49,4 +44,5 @@ function saveOptions(e) {
 
 chrome.tabs.query({ active: true, currentWindow: true }, getUrl);
 
-document.querySelector("form").addEventListener("submit", saveOptions);
+document.getElementById('option-no').addEventListener("click", function() {window.close();});
+document.getElementById('option-yes').addEventListener("click", saveOptions);
