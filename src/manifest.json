@@ -9,7 +9,8 @@
     "*://app.plex.tv/*",
     "*://localhost/*",
     "*://127.0.0.1/*",
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "optional_permissions": [
     "<all_urls>"
