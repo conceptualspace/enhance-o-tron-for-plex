@@ -6,7 +6,7 @@ function handleInstalled(details) {
     if (details.reason === "install") {
         // set uninstall URL
         chrome.runtime.setUninstallURL("https://forms.gle/JqMEogANnkktEtSR9");
-    } else if (details.reason === "update" && details.previousVersion !== "1.3.2") {
+    } else if (details.reason === "update" && details.previousVersion === "1.3.1") {
         const url = chrome.runtime.getURL("updated.html");
         chrome.tabs.create({ url });
     }
@@ -41,7 +41,7 @@ function handleUpdatedTab(tabId, changeInfo, tabInfo) {
             });
     }
     // chrome
-    // be sure tabs permission is not in manifest (otherwise code below executes on every page not just the allowed pages. see note above)
+    // !!! be sure TABS permission is NOT in manifest (otherwise code below executes on every page and will throw error. see note above)
     else if (!window.browser && tabInfo.url && tabInfo.url.startsWith("http") && changeInfo.status === 'complete') {
         // avoid executing a bunch of times
         chrome.tabs.executeScript(tabId, {
