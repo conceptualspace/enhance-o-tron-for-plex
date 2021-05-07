@@ -102,6 +102,15 @@ document.arrive(".PageHeaderBadge-badge-1Jxlh2", function() {
     }
 });
 
+// plex regenerates the count on changes to sort, causing the shuffle button to be out of order.
+// so we remove it along with the counter and readd when the counter reappears
+document.leave(".PageHeaderBadge-badge-1Jxlh2", function() {
+    let shuffleNode = document.getElementById('enhanceotron-shuffle')
+    if (shuffleNode) {
+        shuffleNode.remove();
+    }
+});
+
 
 // ULTRAWIDE ZOOM //
 
