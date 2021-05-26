@@ -199,8 +199,9 @@ document.arrive(".PlayerIconButton-playerButton-1DmNp4", function() {
 // Plex v4.54.x
 document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
     if (!document.getElementById('enhanceotron-widescreen')) {
-        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-2smHOM", "Link-link-3v-v0b", "Link-default-1dmcVx"];
-        const iconClass = "PlexIcon-plexIcon-1hNiE2";
+        // todo: define these locally 
+        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
+        const iconClass = "PlexIcon-plexIcon-2sd7AW";
         const videoClass = "HTMLMedia-mediaElement-2XwlNN";
         // insert button into bottom toolbar
         createZoomElem(btnClasses, iconClass, videoClass);
@@ -256,7 +257,7 @@ function createCompressor(btnClasses, iconClass) {
 // we need to listen for the toolbar instead of the video because plex might nuke it duruing loading
 document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
     if (!document.getElementById('enhanceotron-compressor')) {
-        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-2smHOM", "Link-link-3v-v0b", "Link-default-1dmcVx"];
+        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
         const iconClass = "PlexIcon-plexIcon-1hNiE2";
         // insert button into bottom toolbar
         createCompressor(btnClasses, iconClass);
