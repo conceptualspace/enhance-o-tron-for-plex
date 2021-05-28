@@ -140,9 +140,29 @@ document.arrive(".PageHeaderBadge-badge-1Jxlh2", function() {
     }
 });
 
+// Plex v4.57.x
+document.arrive(".PageHeaderBadge-badge-2Rd-zv", function() {
+    if (!document.getElementById('enhanceotron-shuffle')) {
+        let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-2Rd-zv');
+        if (headerBadgeNode) {
+            headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
+            updateUrl();
+        }
+    }
+});
+
 // plex regenerates the count on changes to sort, causing the shuffle button to be out of order.
 // so we remove it along with the counter and readd when the counter reappears
+// v4.54
 document.leave(".PageHeaderBadge-badge-1Jxlh2", function() {
+    let shuffleNode = document.getElementById('enhanceotron-shuffle')
+    if (shuffleNode) {
+        shuffleNode.remove();
+    }
+});
+
+// v4.57
+document.leave(".PageHeaderBadge-badge-2Rd-zv", function() {
     let shuffleNode = document.getElementById('enhanceotron-shuffle')
     if (shuffleNode) {
         shuffleNode.remove();
@@ -199,7 +219,7 @@ document.arrive(".PlayerIconButton-playerButton-1DmNp4", function() {
 // Plex v4.54.x
 document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
     if (!document.getElementById('enhanceotron-widescreen')) {
-        // todo: define these locally 
+        // todo: define these locally
         const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
         const iconClass = "PlexIcon-plexIcon-2sd7AW";
         const videoClass = "HTMLMedia-mediaElement-2XwlNN";
