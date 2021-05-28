@@ -3,7 +3,7 @@
 "use strict";
 
 // todo: fix this
-var enhanceotronAudioCtx, compressor, source, compressorActive;
+let enhanceotronAudioCtx, compressor, source, compressorActive;
 
 // TRAILERS //
 
@@ -55,30 +55,66 @@ document.arrive("div[data-qa-id='preplay-secondTitle']", function() {
 
 // LIBRARY SHUFFLE //
 
-function createShuffleElem() {
+function updateUrl() {
+    // plex url is totally mangled. thanks interns
     const url = window.location.href;
-    const nonParams = url.slice(0, url.indexOf('?') + 1);
-    const params = url.slice(url.indexOf('?') + 1).split('&');
+    const source = url.slice(url.indexOf('source=') + 7).split('&')[0];
+    const movies = document.querySelector('.SourceSidebarLink-isSelected-7ttE4w #plex-icon-sidebar-movies-560');
+    const type = movies ? '1' : '2';
 
-    let newParams = params.map(function(param) {
-        if (param.includes('sort=')) {
-            return ''
+    let newUrl = '';
+
+    // each library has a key which must be included to make url queries
+    // the key is in the form "library\sections" plus the source" param. ex: library\sections\25
+    if (url.includes('key=')) {
+        if (url.includes('sort=')) {
+            // just need to replace the sort param (original method)
+            const nonParams = url.slice(0, url.indexOf('?') + 1);
+            const params = url.slice(url.indexOf('?') + 1).split('&');
+
+            let newParams = params.map(function(param) {
+                if (param.includes('sort=')) {
+                    return ''
+                } else {
+                    return param
+                }
+            }).join('&');
+            newParams += "&sort=random";
+            newUrl = nonParams + newParams;
+        } else if (url.includes('sort%3D')) {
+            // replace the sort string
+            const currentSort = url.slice(url.indexOf('sort%3D') + 7).split('%26')[0];
+            // hack to refresh inline
+            if (currentSort === 'random') {
+                newUrl = url.replace(currentSort, 'random%253Adesc')
+            } else {
+                newUrl = url.replace(currentSort, 'random')
+            }
         } else {
-            return param
+            newUrl = url + "&sort=random";
         }
-    }).join('&');
+    } else {
+        // append key and search
+        const keyParam = "&key=%2Flibrary%2Fsections%2F" + source + "%2Fall";
+        const typeParam = "%3Ftype%3D" + type;
+        const sortParam = "%26sort%3Drandom";
+        newUrl = url + keyParam + typeParam + sortParam;
+    }
 
-    newParams += "&sort=random";
-    let newUrl = nonParams + newParams;
+    document.getElementById('enhanceotron-shuffle').href = newUrl;
 
+    // default link action
+    return true;
+}
+
+function createShuffleElem() {
     let a = document.createElement('a');
     let linkText = document.createTextNode(" 🎲 " + chrome.i18n.getMessage("shuffle"));
     a.setAttribute("id", "enhanceotron-shuffle");
     a.appendChild(linkText);
     a.title = "Sort the library randomly";
-    a.href = newUrl;
     a.style.marginLeft = "25px";
-
+    a.onclick=updateUrl;
     return a;
 }
 
@@ -88,6 +124,7 @@ document.arrive(".PageHeaderBadge-badge-2oDBgn", function() {
         let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-2oDBgn');
         if (headerBadgeNode) {
             headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
+            updateUrl();
         }
     }
 });
@@ -98,7 +135,37 @@ document.arrive(".PageHeaderBadge-badge-1Jxlh2", function() {
         let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-1Jxlh2');
         if (headerBadgeNode) {
             headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
+            updateUrl();
         }
+    }
+});
+
+// Plex v4.57.x
+document.arrive(".PageHeaderBadge-badge-2Rd-zv", function() {
+    if (!document.getElementById('enhanceotron-shuffle')) {
+        let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-2Rd-zv');
+        if (headerBadgeNode) {
+            headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
+            updateUrl();
+        }
+    }
+});
+
+// plex regenerates the count on changes to sort, causing the shuffle button to be out of order.
+// so we remove it along with the counter and readd when the counter reappears
+// v4.54
+document.leave(".PageHeaderBadge-badge-1Jxlh2", function() {
+    let shuffleNode = document.getElementById('enhanceotron-shuffle')
+    if (shuffleNode) {
+        shuffleNode.remove();
+    }
+});
+
+// v4.57
+document.leave(".PageHeaderBadge-badge-2Rd-zv", function() {
+    let shuffleNode = document.getElementById('enhanceotron-shuffle')
+    if (shuffleNode) {
+        shuffleNode.remove();
     }
 });
 
@@ -152,8 +219,9 @@ document.arrive(".PlayerIconButton-playerButton-1DmNp4", function() {
 // Plex v4.54.x
 document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
     if (!document.getElementById('enhanceotron-widescreen')) {
-        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-2smHOM", "Link-link-3v-v0b", "Link-default-1dmcVx"];
-        const iconClass = "PlexIcon-plexIcon-1hNiE2";
+        // todo: define these locally
+        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
+        const iconClass = "PlexIcon-plexIcon-2sd7AW";
         const videoClass = "HTMLMedia-mediaElement-2XwlNN";
         // insert button into bottom toolbar
         createZoomElem(btnClasses, iconClass, videoClass);
@@ -209,7 +277,7 @@ function createCompressor(btnClasses, iconClass) {
 // we need to listen for the toolbar instead of the video because plex might nuke it duruing loading
 document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
     if (!document.getElementById('enhanceotron-compressor')) {
-        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-2smHOM", "Link-link-3v-v0b", "Link-default-1dmcVx"];
+        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
         const iconClass = "PlexIcon-plexIcon-1hNiE2";
         // insert button into bottom toolbar
         createCompressor(btnClasses, iconClass);
