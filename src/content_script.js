@@ -38,16 +38,10 @@ document.arrive("div[data-qa-id='preplay-secondTitle']", function() {
     if (!document.getElementById('enhanceotron-trailer')) {
         let title = document.querySelector("div[data-qa-id='preplay-mainTitle']").textContent;
         let year = document.querySelector("div[data-qa-id='preplay-secondTitle']").textContent;
-        // Plex v4.54.x
-        let titleNode = document.querySelector('.PrePlayTertiaryTitle-tertiaryTitle-2RGElY');
+        // tested from v4.54.x - v4.60.x
+        let titleNode = document.querySelector("div[data-qa-id='preplay-thirdTitle']");
         if (titleNode) {
             titleNode.appendChild(createTrailerElem(title, year, true));
-        } else {
-            // Plex < v4.54
-            let titleNode = document.querySelector('.PrePlayTertiaryTitle-tertiaryTitle-1LwUaC');
-            if (titleNode) {
-                titleNode.appendChild(createTrailerElem(title, year, true));
-            }
         }
     }
 });
