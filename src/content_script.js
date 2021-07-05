@@ -53,7 +53,7 @@ function updateUrl() {
     // plex url is totally mangled. thanks interns
     const url = window.location.href;
     const source = url.slice(url.indexOf('source=') + 7).split('&')[0];
-    const movies = document.querySelector('.SourceSidebarLink-isSelected-7ttE4w #plex-icon-sidebar-movies-560');
+    const movies = document.querySelector('[class*="SourceSidebarLink-isSelected"] #plex-icon-sidebar-movies-560');
     const type = movies ? '1' : '2';
 
     let newUrl = '';
@@ -112,10 +112,9 @@ function createShuffleElem() {
     return a;
 }
 
-// Plex v4.x
-document.arrive(".PageHeaderBadge-badge-2oDBgn", function() {
+document.arrive('[class*="PageHeaderBadge-badge-"]', function() {
     if (!document.getElementById('enhanceotron-shuffle')) {
-        let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-2oDBgn');
+        let headerBadgeNode = document.querySelector('[class*="PageHeaderBadge-badge-"]');
         if (headerBadgeNode) {
             headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
             updateUrl();
@@ -123,40 +122,11 @@ document.arrive(".PageHeaderBadge-badge-2oDBgn", function() {
     }
 });
 
-// Plex v4.54.x
-document.arrive(".PageHeaderBadge-badge-1Jxlh2", function() {
-    if (!document.getElementById('enhanceotron-shuffle')) {
-        let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-1Jxlh2');
-        if (headerBadgeNode) {
-            headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
-            updateUrl();
-        }
-    }
-});
-
-// Plex v4.57.x
-document.arrive(".PageHeaderBadge-badge-2Rd-zv", function() {
-    if (!document.getElementById('enhanceotron-shuffle')) {
-        let headerBadgeNode = document.querySelector('.PageHeaderBadge-badge-2Rd-zv');
-        if (headerBadgeNode) {
-            headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
-            updateUrl();
-        }
-    }
-});
 
 // plex regenerates the count on changes to sort, causing the shuffle button to be out of order.
-// so we remove it along with the counter and readd when the counter reappears
-// v4.54
-document.leave(".PageHeaderBadge-badge-1Jxlh2", function() {
-    let shuffleNode = document.getElementById('enhanceotron-shuffle')
-    if (shuffleNode) {
-        shuffleNode.remove();
-    }
-});
-
-// v4.57
-document.leave(".PageHeaderBadge-badge-2Rd-zv", function() {
+// so we remove it along with the counter and recreate when the counter reappears
+// v4.x
+document.leave('[class*="PageHeaderBadge-badge-"]', function() {
     let shuffleNode = document.getElementById('enhanceotron-shuffle')
     if (shuffleNode) {
         shuffleNode.remove();
