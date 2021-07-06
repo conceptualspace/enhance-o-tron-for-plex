@@ -136,23 +136,41 @@ document.leave('[class*="PageHeaderBadge-badge-"]', function() {
 
 // ULTRAWIDE ZOOM //
 
-function createZoomElem(btnClasses, iconClass, videoClass) {
+function createZoomElem() {
     let widescreenBtn = document.createElement('button');
     widescreenBtn.setAttribute("id","enhanceotron-widescreen");
     widescreenBtn.setAttribute("title","Zoom for 21:9");
-    widescreenBtn.classList.add(...btnClasses);
-    widescreenBtn.style.marginLeft = "10px";
+
+    //widescreenBtn.style.marginLeft = "10px";
     widescreenBtn.style.opacity = "0.5";
+
+    widescreenBtn.style.marginLeft = "5px";
+    widescreenBtn.style.fontSize = "18px";
+    widescreenBtn.style.height = "30px";
+    widescreenBtn.style.width = "30px";
+
+    widescreenBtn.style.background = "none";
+    widescreenBtn.style.border = "0";
+    widescreenBtn.style.cursor = "pointer";
+    widescreenBtn.style.outline = "none";
+    widescreenBtn.style.padding = "0";
+    widescreenBtn.style.textDecoration = "none";
+    widescreenBtn.style.touchAction = "manipulation";
+    widescreenBtn.style.transition = "color .2s";
+    widescreenBtn.style.userSelect = "none";
 
     let widescreenIcon = document.createElement("img");
     widescreenIcon.src = chrome.runtime.getURL("img/icon219.svg");
-    widescreenIcon.classList.add(iconClass);
-    widescreenIcon.style.width = "1.3em";
-    widescreenIcon.style.height = "1.3em";
+
+    widescreenIcon.style.height = "1.2em";
+    widescreenIcon.style.width = "1.2em";
+    widescreenIcon.style.position = "relative";
+    widescreenIcon.style.top = "-2px";
+    widescreenIcon.style.verticalAlign = "middle";
 
     widescreenBtn.appendChild(widescreenIcon);
     widescreenBtn.onclick = function () {
-        let videoElem = document.querySelector(`video.${videoClass}`);
+        let videoElem = document.querySelector('video[class*="HTMLMedia-mediaElement-"]');
         if (videoElem.style.transform === "scale(1.34)") {
             videoElem.style.transform = "scale(1)";
             widescreenBtn.style.opacity = "0.5";
@@ -162,52 +180,47 @@ function createZoomElem(btnClasses, iconClass, videoClass) {
         }
     }
 
-    const rightControls = document.querySelector('.PlayerControls-buttonGroupRight-3tN_y5');
+    const rightControls = document.querySelector('[class*="PlayerControls-buttonGroupRight-"]');
 
     if (rightControls) {
         rightControls.insertBefore(widescreenBtn, rightControls.lastChild);
     }
 }
 
-// Plex v4.x
-document.arrive(".PlayerIconButton-playerButton-1DmNp4", function() {
-    if (!document.getElementById('enhanceotron-widescreen')) {
-        const btnClasses = ["PlayerIconButton-playerButton-1DmNp4", "IconButton-button-9An-7I", "Link-link-2n0yJn", "Link-default-2XA2bN"];
-        const iconClass = "PlexIcon-plexIcon-8Tamaj";
-        const videoClass = "HTMLMedia-mediaElement-35x77U";
-        // insert button into bottom toolbar
-        createZoomElem(btnClasses, iconClass, videoClass);
-    }
-});
-
-// Plex v4.54.x
-document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
-    if (!document.getElementById('enhanceotron-widescreen')) {
-        // todo: define these locally
-        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
-        const iconClass = "PlexIcon-plexIcon-2sd7AW";
-        const videoClass = "HTMLMedia-mediaElement-2XwlNN";
-        // insert button into bottom toolbar
-        createZoomElem(btnClasses, iconClass, videoClass);
-    }
-});
-
 // AUDIO COMPRESSOR //
 
-function createCompressor(btnClasses, iconClass) {
+function createCompressor() {
     let compressorBtn = document.createElement('button');
     compressorBtn.setAttribute("id","enhanceotron-compressor");
     //compressorBtn.setAttribute('data-active', 'false');
     compressorBtn.setAttribute('title', 'Volume Compressor');
-    compressorBtn.classList.add(...btnClasses);
-    compressorBtn.style.marginLeft = "10px";
+
+    //compressorBtn.style.marginLeft = "10px";
     compressorBtn.style.opacity = compressorActive ? "1" : "0.5";
+
+    compressorBtn.style.marginLeft = "5px";
+    compressorBtn.style.fontSize = "18px";
+    compressorBtn.style.height = "30px";
+    compressorBtn.style.width = "30px";
+
+    compressorBtn.style.background = "none";
+    compressorBtn.style.border = "0";
+    compressorBtn.style.cursor = "pointer";
+    compressorBtn.style.outline = "none";
+    compressorBtn.style.padding = "0";
+    compressorBtn.style.textDecoration = "none";
+    compressorBtn.style.touchAction = "manipulation";
+    compressorBtn.style.transition = "color .2s";
+    compressorBtn.style.userSelect = "none";
 
     let compressorIcon = document.createElement("img");
     compressorIcon.src = chrome.runtime.getURL("img/compress.svg");
-    compressorIcon.classList.add(iconClass);
-    compressorIcon.style.width = "1.3em";
-    compressorIcon.style.height = "1.3em";
+
+    compressorIcon.style.height = "1.2em";
+    compressorIcon.style.width = "1.2em";
+    compressorIcon.style.position = "relative";
+    compressorIcon.style.top = "-2px";
+    compressorIcon.style.verticalAlign = "middle";
 
     compressorBtn.appendChild(compressorIcon);
 
@@ -230,26 +243,17 @@ function createCompressor(btnClasses, iconClass) {
         }
     }
 
-    const rightControls = document.querySelector('.PlayerControls-buttonGroupRight-3tN_y5');
+    const rightControls = document.querySelector('[class*="PlayerControls-buttonGroupRight-"]');
 
     if (rightControls) {
         rightControls.insertBefore(compressorBtn, rightControls.lastChild);
     }
 }
 
-// Plex v4.54.x
-// we need to listen for the toolbar instead of the video because plex might nuke it duruing loading
-document.arrive(".PlayerIconButton-playerButton-aW9TNw", function() {
-    if (!document.getElementById('enhanceotron-compressor')) {
-        const btnClasses = ["PlayerIconButton-playerButton-aW9TNw", "IconButton-button-llQ1So", "Link-link-CM9nxg", "Link-default-1mYhCE"];
-        const iconClass = "PlexIcon-plexIcon-1hNiE2";
-        // insert button into bottom toolbar
-        createCompressor(btnClasses, iconClass);
-    }
-});
+document.arrive('video[class*="HTMLMedia-mediaElement-"]', function() {
+    //const videoElem = document.querySelector('.HTMLMedia-mediaElement-2XwlNN');
+    const videoElem = document.querySelector('video[class*="HTMLMedia-mediaElement-"]');
 
-document.arrive(".HTMLMedia-mediaElement-2XwlNN", function() {
-    const videoElem = document.querySelector('.HTMLMedia-mediaElement-2XwlNN');
     // ensure audio isnt zeroed out
     videoElem.crossOrigin = "anonymous";
 
@@ -274,4 +278,20 @@ document.arrive(".HTMLMedia-mediaElement-2XwlNN", function() {
             source.connect(enhanceotronAudioCtx.destination);
         }
     });
+});
+
+// ADD ULTRAWIDE AND COMPRESSOR BOTTOM TOOLBAR BUTTONS
+
+document.arrive("button[data-qa-id='volumeButton']", function() {
+    // styles hardcoded above, since class names always change
+    // const btnClasses = ["PlayerIconButton-playerButton-RFZk1i", "IconButton-button-30bRLm", "Link-link-3cHWtJ", "Link-default-5Qrl3D"];
+    // const iconClass = "PlexIcon-plexIcon-2E9Gg6";
+
+    if (!document.getElementById('enhanceotron-widescreen')) {
+        createZoomElem();
+    }
+
+    if (!document.getElementById('enhanceotron-compressor')) {
+        createCompressor();
+    }
 });
