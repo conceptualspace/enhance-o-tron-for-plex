@@ -3,7 +3,7 @@
 "use strict";
 
 // todo: fix this
-let enhanceotronAudioCtx, compressor, source, compressorActive;
+let enhanceotronAudioCtx, compressor, source, compressorActive, libraryType;
 
 // TRAILERS //
 
@@ -53,8 +53,6 @@ function updateUrl() {
     // plex url is totally mangled. thanks interns
     const url = window.location.href;
     const source = url.slice(url.indexOf('source=') + 7).split('&')[0];
-    const movies = document.querySelector('[class*="SourceSidebarLink-isSelected"] #plex-icon-sidebar-movies-560');
-    const type = movies ? '1' : '2';
 
     let newUrl = '';
 
@@ -90,7 +88,7 @@ function updateUrl() {
     } else {
         // append key and search
         const keyParam = "&key=%2Flibrary%2Fsections%2F" + source + "%2Fall";
-        const typeParam = "%3Ftype%3D" + type;
+        const typeParam = "%3Ftype%3D" + libraryType;
         const sortParam = "%26sort%3Drandom";
         newUrl = url + keyParam + typeParam + sortParam;
     }
@@ -116,8 +114,33 @@ document.arrive('[class*="PageHeaderBadge-badge-"]', function() {
     if (!document.getElementById('enhanceotron-shuffle')) {
         let headerBadgeNode = document.querySelector('[class*="PageHeaderBadge-badge-"]');
         if (headerBadgeNode) {
-            headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
-            updateUrl();
+            // only add shuffle button to Movies and TV pages
+            const buttons = document.getElementsByTagName("button");
+            let type = null;
+            for (let button of buttons) {
+                if (button.innerText) {
+                    let buttonText = button.innerText.toLowerCase();
+                    if (buttonText === "movies") {
+                        type = 1;
+                        break;
+                    } else if (buttonText === "tv shows") {
+                        type = 2;
+                        break;
+                    } else if (buttonText === "seasons") {
+                        type = 3;
+                        break;
+                    } else if (buttonText === "episodes") {
+                        type = 4;
+                        break;
+                    }
+                }
+            }
+
+            if (type) {
+                libraryType = type;
+                headerBadgeNode.parentNode.insertBefore(createShuffleElem(), headerBadgeNode.nextSibling);
+                updateUrl();
+            }
         }
     }
 });
