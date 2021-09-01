@@ -46,6 +46,19 @@ document.arrive("div[data-qa-id='preplay-secondTitle']", function() {
     }
 });
 
+// Plex v4.64.x
+// data-qa-id -> data-testid
+document.arrive("div[data-testid='preplay-secondTitle']", function() {
+    if (!document.getElementById('enhanceotron-trailer')) {
+        let title = document.querySelector("div[data-testid='preplay-mainTitle']").textContent;
+        let year = document.querySelector("div[data-testid='preplay-secondTitle']").textContent;
+        // tested from v4.54.x - v4.60.x
+        let titleNode = document.querySelector("div[data-testid='preplay-thirdTitle']");
+        if (titleNode) {
+            titleNode.appendChild(createTrailerElem(title, year, true));
+        }
+    }
+});
 
 // LIBRARY SHUFFLE //
 
@@ -306,6 +319,21 @@ document.arrive('video[class*="HTMLMedia-mediaElement-"]', function() {
 // ADD ULTRAWIDE AND COMPRESSOR BOTTOM TOOLBAR BUTTONS
 
 document.arrive("button[data-qa-id='volumeButton']", function() {
+    // styles hardcoded above, since class names always change
+    // const btnClasses = ["PlayerIconButton-playerButton-RFZk1i", "IconButton-button-30bRLm", "Link-link-3cHWtJ", "Link-default-5Qrl3D"];
+    // const iconClass = "PlexIcon-plexIcon-2E9Gg6";
+
+    if (!document.getElementById('enhanceotron-widescreen')) {
+        createZoomElem();
+    }
+
+    if (!document.getElementById('enhanceotron-compressor')) {
+        createCompressor();
+    }
+});
+
+// Plex v4.64.x
+document.arrive("button[data-testid='volumeButton']", function() {
     // styles hardcoded above, since class names always change
     // const btnClasses = ["PlayerIconButton-playerButton-RFZk1i", "IconButton-button-30bRLm", "Link-link-3cHWtJ", "Link-default-5Qrl3D"];
     // const iconClass = "PlexIcon-plexIcon-2E9Gg6";
