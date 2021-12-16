@@ -1,2 +1,9 @@
 .idea*
 .DS_Store
+
+*/dist
+*/temp
+
+node_modules
+npm-debug.log*
+*.log
