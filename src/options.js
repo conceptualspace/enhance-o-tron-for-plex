@@ -32,7 +32,7 @@ function saveOptions(e) {
 
     chrome.permissions.request({
         origins: [url]
-    }, function(granted) {
+    }, (granted) => {
         if (granted) {
             chrome.tabs.reload(tabId);
             window.close();
@@ -42,7 +42,23 @@ function saveOptions(e) {
     });
 }
 
+function removeDomain(e) {
+    e.preventDefault();
+
+    chrome.permissions.remove({
+        origins: [url]
+    }, (removed) => {
+        if (removed) {
+            document.getElementById("enabled").style.display = "none";
+            document.getElementById("disabled").style.display = "block";
+        } else {
+            document.getElementById("removeError").style.display = "block";            
+        }
+    })
+}
+
 chrome.tabs.query({ active: true, currentWindow: true }, getUrl);
 
 document.getElementById('option-no').addEventListener("click", function() {window.close();});
 document.getElementById('option-yes').addEventListener("click", saveOptions);
+document.getElementById('option-remove').addEventListener("click", removeDomain);
