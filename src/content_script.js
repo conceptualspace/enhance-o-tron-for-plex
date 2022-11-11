@@ -13,7 +13,9 @@ function createTrailerElem(title, year, margin) {
     trailer.setAttribute('href',"https://www.youtube.com/results?search_query="+title+"+"+year+"+trailer");
     trailer.setAttribute('target',"_blank");
     if (margin) {
-        trailer.style.marginLeft = '20px';
+        trailer.style.marginLeft = '10px';
+       // todo: clone styles
+       // trailer.style.fontSize = 'var(--font-body-2-font-size)';
     }
     trailer.innerText = chrome.i18n.getMessage("playTrailer");
     return trailer;
@@ -48,11 +50,13 @@ document.arrive("div[data-qa-id='preplay-secondTitle']", function() {
 
 // Plex v4.64.x
 // data-qa-id -> data-testid
-document.arrive("div[data-testid='preplay-secondTitle']", function() {
+document.arrive("div[data-testid='preplay-thirdTitle']", function() {
     if (!document.getElementById('enhanceotron-trailer')) {
-        let title = document.querySelector("div[data-testid='preplay-mainTitle']").textContent;
-        let year = document.querySelector("div[data-testid='preplay-secondTitle']").textContent;
-        // tested from v4.54.x - v4.60.x
+        let title = document.querySelector("div[data-testid='preplay-mainTitle']")?.textContent;
+        let year = document.querySelector("div[data-testid='preplay-secondTitle']") ? 
+            document.querySelector("div[data-testid='preplay-secondTitle']")?.textContent :
+            document.querySelector("div[data-testid='preplay-mainTitle']")?.nextSibling?.firstChild?.textContent;
+        // tested from v4.54.x - v4.94.2
         let titleNode = document.querySelector("div[data-testid='preplay-thirdTitle']");
         if (titleNode) {
             titleNode.appendChild(createTrailerElem(title, year, true));
