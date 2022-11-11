@@ -9,7 +9,8 @@
     "*://app.plex.tv/*",
     "*://localhost/*",
     "*://127.0.0.1/*",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "optional_permissions": [
     "<all_urls>"
@@ -28,5 +29,5 @@
     "48": "img/icon48.png",
     "128": "img/icon128.png"
   },
-  "web_accessible_resources": ["img/icon219.svg", "img/compress.svg"]
+  "web_accessible_resources": [ "img/icon219.svg", "img/compress.svg", "img/introSkip.svg" ]
 }

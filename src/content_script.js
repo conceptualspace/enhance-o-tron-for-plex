@@ -3,7 +3,70 @@
 "use strict";
 
 // todo: fix this
-let enhanceotronAudioCtx, compressor, source, compressorActive, libraryType;
+let enhanceotronAudioCtx, compressor, libraryType;
+let introObserver = new MutationObserver((mutationsList) => {
+    for (let mutation of mutationsList) {
+        if (mutation.addedNodes.length <= 0 || !mutation.addedNodes[0] || mutation.addedNodes[0].innerText !== "SKIP INTRO") continue;
+
+        // Intro button shows up early sometimes so wait 2 seconds before clicking it
+        setTimeout(() => { mutation.addedNodes[0].firstChild.click() }, 2000);
+        return;
+    }
+});
+
+const enhanceotronOptions = {
+    _skipIntroEnabled: false,
+    _audioCompressorEnabled: false,
+    _source: null,
+
+    // Skip Intro getter/setter
+    get SkipIntroEnabled() {
+        return this._skipIntroEnabled;
+    },
+    set SkipIntroEnabled(value) {
+        this._skipIntroEnabled = value;
+
+        if (value) {
+            introObserver.observe(document.getElementById('plex'), {
+                childList: true,
+                attributes: false,
+                subtree: true
+            });
+        } else {
+            introObserver.disconnect();
+        }
+    },
+
+    // Audio Compressor getter/setter
+    get AudioCompressorEnabled() {
+        return this._audioCompressorEnabled;
+    },
+    set AudioCompressorEnabled(value) {
+        this._audioCompressorEnabled = value;
+        audioCompressorChange();
+    },
+
+    // Source getter/setter
+    get Source() {
+        return this._source;
+    },
+    set Source(value) {
+        this._source = value;
+        if(value) setTimeout(function () { audioCompressorChange(); }, 500);
+    }
+};
+
+const audioCompressorChange = function () {
+    if (enhanceotronOptions.Source && enhanceotronOptions.AudioCompressorEnabled) {
+        enhanceotronOptions.Source.disconnect(enhanceotronAudioCtx.destination);
+        enhanceotronOptions.Source.connect(compressor);
+        compressor.connect(enhanceotronAudioCtx.destination);
+    } else if (enhanceotronOptions.Source && !enhanceotronOptions.AudioCompressorEnabled) {
+        enhanceotronOptions.Source.disconnect(compressor);
+        compressor.disconnect(enhanceotronAudioCtx.destination);
+        enhanceotronOptions.Source.connect(enhanceotronAudioCtx.destination);
+    }
+}
 
 // TRAILERS //
 
@@ -232,11 +295,9 @@ function createZoomElem() {
 function createCompressor() {
     let compressorBtn = document.createElement('button');
     compressorBtn.setAttribute("id","enhanceotron-compressor");
-    //compressorBtn.setAttribute('data-active', 'false');
     compressorBtn.setAttribute('title', 'Volume Compressor');
 
-    //compressorBtn.style.marginLeft = "10px";
-    compressorBtn.style.opacity = compressorActive ? "1" : "0.5";
+    compressorBtn.style.opacity = enhanceotronOptions.AudioCompressorEnabled ? "1" : "0.5";
 
     compressorBtn.style.marginLeft = "5px";
     compressorBtn.style.fontSize = "18px";
@@ -265,28 +326,64 @@ function createCompressor() {
     compressorBtn.appendChild(compressorIcon);
 
     compressorBtn.onclick = function () {
-        //const active = compressorBtn.getAttribute('data-active');
-        if (source && !compressorActive) {
-            //compressorBtn.setAttribute('data-active', 'true');
-            compressorActive = true
-            compressorBtn.style.opacity = "1";
-            source.disconnect(enhanceotronAudioCtx.destination);
-            source.connect(compressor);
-            compressor.connect(enhanceotronAudioCtx.destination);
-        } else if (source && compressorActive) {
-            //compressorBtn.setAttribute('data-active', 'false');
-            compressorActive = false
-            compressorBtn.style.opacity = "0.5";
-            source.disconnect(compressor);
-            compressor.disconnect(enhanceotronAudioCtx.destination);
-            source.connect(enhanceotronAudioCtx.destination);
-        }
+        enhanceotronOptions.AudioCompressorEnabled = !enhanceotronOptions.AudioCompressorEnabled; 
+        compressorBtn.style.opacity = enhanceotronOptions.AudioCompressorEnabled ? "1" : "0.5";
+        chrome.storage.sync.set({ audioCompressor: enhanceotronOptions.AudioCompressorEnabled });
+
     }
 
     const rightControls = document.querySelector('[class*="PlayerControls-buttonGroupRight-"]');
 
     if (rightControls) {
         rightControls.insertBefore(compressorBtn, rightControls.lastChild);
+    }
+}
+
+// SKIP INTRO //
+
+function createSkipIntro() {
+
+    let skipIntroButton = document.createElement('button');
+
+    skipIntroButton.setAttribute("id", "enhanceotron-skipIntro");
+    skipIntroButton.setAttribute("title", "Automatically Skip Intros (Requires Plex Pass)");
+
+    skipIntroButton.style.opacity = enhanceotronOptions.SkipIntroEnabled ? "1" : ".5";
+    skipIntroButton.style.marginLeft = "5px";
+    skipIntroButton.style.fontSize = "18px";
+    skipIntroButton.style.height = "30px";
+    skipIntroButton.style.width = "30px";
+    skipIntroButton.style.background = "none";
+    skipIntroButton.style.border = "0";
+    skipIntroButton.style.cursor = "pointer";
+    skipIntroButton.style.outline = "none";
+    skipIntroButton.style.padding = "0";
+    skipIntroButton.style.textDecoration = "none";
+    skipIntroButton.style.touchAction = "manipulation";
+    skipIntroButton.style.transition = "color .2s";
+    skipIntroButton.style.userSelect = "none";
+
+    let skipIntroIcon = document.createElement("img");
+    skipIntroIcon.src = chrome.runtime.getURL("img/introSkip.svg");
+
+    skipIntroIcon.style.height = "1.2em";
+    skipIntroIcon.style.width = "1.2em";
+    skipIntroIcon.style.position = "relative";
+    skipIntroIcon.style.top = "-2px";
+    skipIntroIcon.style.verticalAlign = "middle";
+
+    skipIntroButton.appendChild(skipIntroIcon);
+
+    skipIntroButton.onclick = function () {
+        enhanceotronOptions.SkipIntroEnabled = !enhanceotronOptions.SkipIntroEnabled;
+        skipIntroButton.style.opacity = enhanceotronOptions.SkipIntroEnabled ? "1" : ".5";
+        chrome.storage.sync.set({ skipIntro: enhanceotronOptions.SkipIntroEnabled });
+    }
+
+    const rightControls = document.querySelector('[class*="PlayerControls-buttonGroupRight-"]');
+
+    if (rightControls) {
+        rightControls.insertBefore(skipIntroButton, rightControls.lastChild);
     }
 }
 
@@ -304,8 +401,8 @@ document.arrive('video[class*="HTMLMedia-mediaElement-"]', function() {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             enhanceotronAudioCtx = new AudioContext();
 
-            if (!source) {
-                source = enhanceotronAudioCtx.createMediaElementSource(videoElem);
+            if (!enhanceotronOptions.Source) {
+                enhanceotronOptions.Source = enhanceotronAudioCtx.createMediaElementSource(videoElem);
             }
 
             compressor = enhanceotronAudioCtx.createDynamicsCompressor();
@@ -315,7 +412,7 @@ document.arrive('video[class*="HTMLMedia-mediaElement-"]', function() {
             compressor.threshold.value = -50;
             compressor.knee.value = 12;
 
-            source.connect(enhanceotronAudioCtx.destination);
+            enhanceotronOptions.Source.connect(enhanceotronAudioCtx.destination);
         }
     });
 });
@@ -332,7 +429,17 @@ document.arrive("button[data-qa-id='volumeButton']", function() {
     }
 
     if (!document.getElementById('enhanceotron-compressor')) {
-        createCompressor();
+        chrome.storage.sync.get(['audioCompressor'], function (result) {
+            enhanceotronOptions.AudioCompressorEnabled = result.audioCompressor;
+            createCompressor();
+        });
+    }
+
+    if (!document.getElementById('enhanceotron-skipIntro')) {
+        chrome.storage.sync.get(['skipIntro'], function (result) {
+            enhanceotronOptions.SkipIntroEnabled = result.skipIntro;
+            createSkipIntro();
+        });
     }
 });
 
@@ -347,6 +454,16 @@ document.arrive("button[data-testid='volumeButton']", function() {
     }
 
     if (!document.getElementById('enhanceotron-compressor')) {
-        createCompressor();
+        chrome.storage.sync.get(['audioCompressor'], function (result) {
+            enhanceotronOptions.AudioCompressorEnabled = result.audioCompressor;
+            createCompressor();
+        });
+    }
+
+    if (!document.getElementById('enhanceotron-skipIntro')) {
+        chrome.storage.sync.get(['skipIntro'], function (result) {
+            enhanceotronOptions.SkipIntroEnabled = result.skipIntro;
+            createSkipIntro();
+        });
     }
 });

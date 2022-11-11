@@ -1,37 +1,96 @@
 <!DOCTYPE html>
+<style>
+    .button {
+        width: 80px;
+        height: 30px;
+        border: 0px solid black;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #1f2326;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-family: Open Sans Semibold,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+        font-weight: bold;
+        color: #ffffffcc;
+    }
+
+    button.no {
+        background-color: hsla(0,0%,100%,.25);
+    }
+
+        button.no:hover {
+            background-color: hsla(0,0%,100%,.3);
+        }
+
+    button.yes {
+        background-color: #cc7b19;
+    }
+
+        button.yes:hover {
+            background-color: #e59029;
+        }
+
+    button.remove {
+        background-color: #9e2810;
+        width: 150px;
+    }
+        button.remove:hover {
+            background-color: #c93c20;
+        }
+
+    a {
+        color: #cc7b19;
+        text-decoration: none;
+    }
+
+        a:hover {
+            color: #e59029;
+        }
+</style>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Enhance-O-Tron Settings</title>
 </head>
-<body style="width: 380px; padding: 0px 20px 0px 20px;">
-<div id="disabled" style="display:none;">
-<h2>Enable Enhance-O-Tron on this Domain?</h2>
-<p id="options-desc" style="font-size: medium; color:dimgrey">
-    If you are running Plex on this domain, you must give Enhance-O-Tron permission to run here.
-    <br />
-</p>
-    <form>
-        <button id="option-yes" type="submit" style="width: 80px; height: 40px; border: 1px solid white; border-radius: 10px; background-color: orange">Yes</button>&nbsp;
-        <button id="option-no" style="width: 80px; height: 40px; border: 1px solid white; border-radius: 10px;">No</button>
-        <br /><br />
-    </form>
 
-</div>
 
-<div id="enabled" style="display:none;">
-    <p style="font-size: medium; color:mediumseagreen">
-        Enhance-O-Tron for Plex is enabled on this domain.
-    </p>
-</div>
 
-<div id="error" style="display:none;">
-    <p style="font-size: large; color:darkred">
-        Permission was denied. Click "Allow" on the browser prompt, or use <a href="https://app.plex.tv" target="_blank">https://app.plex.tv</a> instead.
-    </p>
-</div>
+<body style="width: 380px; padding: 0px 20px 0px 20px; background: #1f1f1f">
+    <div id="disabled" style="display: none; color: #ffffff; margin: 0 0 15px 0;">
+        <h2>Enable Enhance-O-Tron on this Domain?</h2>
+        <p id="options-desc" style="font-size: medium; color: #ffffffcc">
+            If you are running Plex on this domain, you must give Enhance-O-Tron permission to run here.
+            <br />
+        </p>
+        <form>
+            <button id="option-yes" type="submit" class="button yes">Yes</button>&nbsp;
+            <button id="option-no" class="button no">No</button>
+        </form>
 
-<script src="options.js"></script>
+    </div>
+
+    <div id="enabled" style="display:none;">
+        <p style="font-size: medium; color:mediumseagreen">
+            Enhance-O-Tron for Plex is enabled on this domain.
+        </p>
+        <button id="option-remove" class="button remove">Remove domain</button>
+    </div>
+
+    <div id="error" style="display:none;">
+        <p style="font-size: large; color: #b94a48">
+            Permission was denied. Click "Allow" on the browser prompt, or use <a href="https://app.plex.tv" target="_blank">https://app.plex.tv</a> instead.
+        </p>
+    </div>
+
+    <div id="removeError" style="display:none;">
+        <p style="font-size: large; color: #b94a48">
+            Something went wrong, could not remove domain.
+        </p>
+    </div>
+
+    <script src="options.js"></script>
 
 </body>
 </html>
