@@ -8,6 +8,16 @@ Enhanceotron is a browser extension that adds movie trailers, library shuffling,
 
 *Plex, the Plex Play logo and Plex Media Server are trademarks of Plex and used under a license.
 
+## Build (Chrome package)
+
+```bash
+./scripts/build-chrome.sh
+```
+
+This creates a zip package in `dist/` named like:
+
+`enhance-o-tron-for-plex-chrome-v1.5.6.zip`
+
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/plex-logo-flat-small.png)
 
 ![alt tag](https://raw.githubusercontent.com/conceptualspace/enhance-o-tron-for-plex/master/assets/apple/enhance-screenshot1.png)
