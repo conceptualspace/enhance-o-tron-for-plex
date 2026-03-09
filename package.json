@@ -1,0 +1,10 @@
+{
+  "name": "enhance-o-tron-for-plex",
+  "version": "1.5.4",
+  "scripts": {
+    "build": "node scripts/build.js && mkdir -p dist && npm run zipFF && npm run zipChrome && npm run clean",
+    "clean": "rm -rf temp",
+    "zipChrome": "cd src && zip -r ../dist/enhance-o-tron-for-plex-chrome.zip *",
+    "zipFF": "cd temp && zip -r ../dist/enhance-o-tron-for-plex-ff.zip * "
+  }
+}

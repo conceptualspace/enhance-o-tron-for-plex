@@ -31,7 +31,7 @@ function saveOptions(e) {
     e.preventDefault();
 
     chrome.permissions.request({
-        origins: [url]
+        origins: ['https://*/*']
     }, function(granted) {
         if (granted) {
             chrome.tabs.reload(tabId);
