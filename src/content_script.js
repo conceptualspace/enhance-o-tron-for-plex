@@ -309,11 +309,17 @@ document.arrive('video[class*="HTMLMedia-mediaElement-"]', function() {
             }
 
             compressor = enhanceotronAudioCtx.createDynamicsCompressor();
-            // note: dynamicsCompressor's internals are not well documented
-            // a make-up gain is applied by browser as the threshold is lowered
-            // todo: test ff/safari implementations
-            compressor.threshold.value = -50;
-            compressor.knee.value = 12;
+            compressor.threshold.setValueAtTime(-50, enhanceotronAudioCtx.currentTime);
+            compressor.knee.setValueAtTime(40, enhanceotronAudioCtx.currentTime);
+            compressor.ratio.setValueAtTime(12, enhanceotronAudioCtx.currentTime);
+            compressor.attack.setValueAtTime(0, enhanceotronAudioCtx.currentTime);
+            compressor.release.setValueAtTime(0.25, enhanceotronAudioCtx.currentTime);
+
+            // // note: dynamicsCompressor's internals are not well documented
+            // // a make-up gain is applied by browser as the threshold is lowered
+            // // todo: test ff/safari implementations
+            // compressor.threshold.value = -50;
+            // compressor.knee.value = 12;
 
             source.connect(enhanceotronAudioCtx.destination);
         }
